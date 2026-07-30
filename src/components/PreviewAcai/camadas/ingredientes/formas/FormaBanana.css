@@ -1,0 +1,18 @@
+.forma-banana__sombra {
+  fill: #2a0a35;
+  opacity: 0.22;
+}
+
+.forma-banana__corpo {
+  fill: #f5ecd6;
+}
+
+.forma-banana__anel {
+  fill: none;
+  stroke: #d8bd85;
+  stroke-width: 0.8;
+}
+
+.forma-banana__semente {
+  fill: #8a6a3f;
+}

@@ -1,0 +1,45 @@
+.ingredient-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  padding: 8px 16px;
+  border: 2px solid var(--border);
+  border-radius: 999px;
+  background: var(--bg);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-h);
+  cursor: pointer;
+  transition:
+    background-color var(--transition-base) var(--ease-out-soft),
+    border-color var(--transition-base) var(--ease-out-soft),
+    color var(--transition-base) var(--ease-out-soft),
+    transform var(--transition-fast) ease;
+}
+
+.ingredient-chip:hover:not(:disabled) {
+  border-color: var(--accent-border);
+}
+
+.ingredient-chip:active:not(:disabled) {
+  transform: scale(0.94);
+}
+
+.ingredient-chip--selected {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #fff;
+  animation: chipPop var(--transition-base) var(--ease-out-soft);
+}
+
+.ingredient-chip:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.ingredient-chip:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}

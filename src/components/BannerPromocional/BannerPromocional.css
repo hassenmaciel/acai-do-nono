@@ -1,0 +1,71 @@
+.banner-promocional {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin: 0 24px 64px;
+  padding: 40px 48px;
+  border-radius: 24px;
+  background: linear-gradient(135deg, #5e2a84, #8e44ad);
+  color: #fff;
+}
+
+.banner-promocional__content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.banner-promocional__tag {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  opacity: 0.9;
+}
+
+.banner-promocional__text {
+  margin: 0;
+  font-size: clamp(20px, 3vw, 28px);
+  font-weight: 600;
+  line-height: 130%;
+}
+
+.banner-promocional__cta {
+  flex-shrink: 0;
+  padding: 16px 32px;
+  border: none;
+  border-radius: 999px;
+  background: #fff;
+  color: #5e2a84;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.banner-promocional__cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px -6px rgba(0, 0, 0, 0.35);
+}
+
+.banner-promocional__cta:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+
+@media (max-width: 640px) {
+  .banner-promocional {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 32px 24px;
+  }
+
+  .banner-promocional__cta {
+    width: 100%;
+  }
+}

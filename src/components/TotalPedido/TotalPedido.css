@@ -1,0 +1,36 @@
+.total-pedido {
+  padding: 8px 24px 32px;
+}
+
+.total-pedido__card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 14px 20px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--bg);
+  box-shadow: var(--shadow);
+  transition: box-shadow var(--transition-base) var(--ease-out-soft);
+}
+
+.total-pedido__label {
+  font-weight: 600;
+  color: var(--text-h);
+}
+
+.total-pedido__value {
+  font-size: 21px;
+  font-weight: 700;
+  color: var(--accent);
+  transition: color var(--transition-base) var(--ease-out-soft);
+}
+
+@media (min-width: 768px) {
+  .total-pedido__card {
+    max-width: 560px;
+    padding: 24px 40px;
+  }
+}

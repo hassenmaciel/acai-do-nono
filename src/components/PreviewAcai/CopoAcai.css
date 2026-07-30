@@ -1,0 +1,40 @@
+.copo-acai {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  transform: scale(var(--copo-escala, 1));
+  transform-origin: bottom center;
+  transition: transform 0.3s ease;
+}
+
+.copo-acai__cup-body {
+  fill: var(--bg);
+  fill-opacity: 0.94;
+  stroke: var(--border);
+  stroke-width: 3;
+}
+
+.copo-acai__cup-highlight {
+  fill: #ffffff;
+  opacity: 0.12;
+}
+
+.copo-acai__cup-base {
+  fill: var(--bg);
+  stroke: var(--border);
+  stroke-width: 2;
+  opacity: 0.9;
+}
+
+.copo-acai__cup-rim-outer {
+  fill: var(--bg);
+  stroke: var(--border);
+  stroke-width: 2.5;
+}
+
+.copo-acai__cup-rim-inner {
+  fill: none;
+  stroke: var(--border);
+  stroke-width: 1.5;
+  opacity: 0.6;
+}
