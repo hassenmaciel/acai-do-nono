@@ -8,6 +8,7 @@ function ResumoPedido({
   limite = 5,
   podeFinalizar = false,
   onFinalizar = () => {},
+  onAdicionarOutro = () => {},
 }) {
   const ingredientesGratis = ingredientes.slice(0, limite)
   const ingredientesExtras = ingredientes.slice(limite)
@@ -58,6 +59,15 @@ function ResumoPedido({
         <p className="resumo-pedido__count">
           {ingredientesGratis.length} de {limite} ingredientes selecionados
         </p>
+
+        <button
+          type="button"
+          className="resumo-pedido__cta resumo-pedido__cta--secundario"
+          disabled={!podeFinalizar}
+          onClick={onAdicionarOutro}
+        >
+          + Adicionar outro açaí
+        </button>
 
         <button
           type="button"

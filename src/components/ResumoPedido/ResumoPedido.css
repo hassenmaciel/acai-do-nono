@@ -94,6 +94,25 @@
   opacity: 0.6;
 }
 
+.resumo-pedido__cta--secundario {
+  margin-top: 12px;
+  margin-bottom: 10px;
+  background: transparent;
+  color: var(--text-h);
+  border: 1.5px solid var(--border);
+  box-shadow: none;
+}
+
+.resumo-pedido__cta--secundario:hover:not(:disabled) {
+  border-color: var(--accent-border);
+  box-shadow: none;
+}
+
+.resumo-pedido__cta--secundario:disabled {
+  background: transparent;
+  border-color: var(--border);
+}
+
 @media (min-width: 768px) {
   .resumo-pedido__card {
     max-width: 560px;

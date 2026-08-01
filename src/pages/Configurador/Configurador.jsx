@@ -11,6 +11,7 @@ import BarraFinalizarPedido from '../../components/BarraFinalizarPedido/BarraFin
 import { useCart } from '../../hooks/useCart'
 import { calcularTotal, formatarPreco, LIMITE_INGREDIENTES } from '../../utils/precos'
 import { listarIngredientesPorIds } from '../../services/cardapioService'
+import { scrollParaTopo } from '../../utils/scroll'
 import './Configurador.css'
 
 function Configurador() {
@@ -50,7 +51,7 @@ function Configurador() {
     setIngredientesSelecionados([])
   }
 
-  const finalizarConfiguracaoAtual = () => {
+  const salvarItemAtual = () => {
     const dados = {
       tamanhoId: tamanhoSelecionado.id,
       baseId: baseSelecionada.id,
@@ -65,12 +66,24 @@ function Configurador() {
       cart.adicionarItem(dados)
     }
 
+    return foiEdicao
+  }
+
+  const finalizarConfiguracaoAtual = () => {
+    const foiEdicao = salvarItemAtual()
     setModalProximoPasso({ aberto: true, foiEdicao })
   }
 
   const handleAdicionarOutro = () => {
     setModalProximoPasso({ aberto: false, foiEdicao: false })
     resetarConfiguracao()
+    scrollParaTopo()
+  }
+
+  const handleAdicionarOutroDireto = () => {
+    salvarItemAtual()
+    resetarConfiguracao()
+    scrollParaTopo()
   }
 
   const handleFinalizarPedido = () => {
@@ -112,6 +125,7 @@ function Configurador() {
         limite={LIMITE_INGREDIENTES}
         podeFinalizar={podeFinalizarPedido}
         onFinalizar={finalizarConfiguracaoAtual}
+        onAdicionarOutro={handleAdicionarOutroDireto}
       />
       <TotalPedido total={formatarPreco(total)} />
 

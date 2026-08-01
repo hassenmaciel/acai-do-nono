@@ -8,6 +8,7 @@ import { useCart } from '../../hooks/useCart'
 import { obterProduto } from '../../services/cardapioService'
 import { ID_PRODUTO_ACAI } from '../../data/produtos'
 import { formatarPreco } from '../../utils/precos'
+import { scrollParaTopo } from '../../utils/scroll'
 import './Carrinho.css'
 
 function Carrinho() {
@@ -30,14 +31,18 @@ function Carrinho() {
     setModalEnviadoAberto(true)
   }
 
-  const handleNovoPedido = () => {
+  const handleFazerOutroPedido = () => {
+    cart.limparCarrinho()
+    setModalEnviadoAberto(false)
+    navigate('/configurador')
+    scrollParaTopo()
+  }
+
+  const handleVoltarInicio = () => {
     cart.limparCarrinho()
     setModalEnviadoAberto(false)
     navigate('/')
-  }
-
-  const handleContinuarEditando = () => {
-    setModalEnviadoAberto(false)
+    scrollParaTopo()
   }
 
   return (
@@ -90,14 +95,19 @@ function Carrinho() {
 
       <ModalAviso
         aberto={modalEnviadoAberto}
-        titulo="Pedido enviado!"
+        titulo="🎉 Pedido enviado!"
         acaoSecundaria={{
-          label: 'Continuar editando',
-          onClick: handleContinuarEditando,
+          label: '🏠 Voltar ao início',
+          onClick: handleVoltarInicio,
         }}
-        acaoPrimaria={{ label: 'Novo Pedido', onClick: handleNovoPedido }}
+        acaoPrimaria={{
+          label: '🍧 Fazer outro pedido',
+          onClick: handleFazerOutroPedido,
+        }}
       >
-        O que deseja fazer?
+        Obrigado! Seu pedido já chegou até nossa equipe.
+        <br />
+        Agora é só aguardar nossa confirmação.
       </ModalAviso>
     </section>
   )
