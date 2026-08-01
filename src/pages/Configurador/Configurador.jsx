@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useLayoutEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import PreviewAcai from '../../components/PreviewAcai/PreviewAcai'
 import EtapaProgresso from '../../components/EtapaProgresso/EtapaProgresso'
@@ -35,7 +35,7 @@ function Configurador() {
   })
   const [scrollPendente, setScrollPendente] = useState(0)
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (scrollPendente === 0) {
       return
     }
