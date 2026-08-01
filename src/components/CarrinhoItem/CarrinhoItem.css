@@ -1,0 +1,134 @@
+.carrinho-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px 18px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--bg);
+  box-shadow: var(--shadow);
+  text-align: left;
+  transition:
+    opacity 220ms var(--ease-out-soft),
+    transform 220ms var(--ease-out-soft);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .carrinho-item {
+    animation: carrinhoItemEntrar 280ms var(--ease-out-soft);
+  }
+}
+
+.carrinho-item--saindo {
+  opacity: 0;
+  transform: translateX(24px);
+  pointer-events: none;
+}
+
+@keyframes carrinhoItemEntrar {
+  from {
+    opacity: 0;
+    transform: scale(0.94) translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.carrinho-item__cabecalho {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.carrinho-item__tamanho {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-h);
+}
+
+.carrinho-item__total {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.carrinho-item__base {
+  margin: 0;
+  font-size: 13.5px;
+  color: var(--text);
+}
+
+.carrinho-item__ingredientes {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.carrinho-item__ingredientes li {
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--code-bg);
+  font-size: 12px;
+  color: var(--text-h);
+}
+
+.carrinho-item__extras {
+  margin: 0;
+  font-size: 12.5px;
+  color: var(--text);
+}
+
+.carrinho-item__extras-tag {
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: var(--accent-bg);
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.carrinho-item__acoes {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.carrinho-item__botao {
+  flex: 1;
+  padding: 9px 10px;
+  border: 1.5px solid var(--border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-h);
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    border-color var(--transition-base) var(--ease-out-soft),
+    color var(--transition-base) var(--ease-out-soft);
+}
+
+.carrinho-item__botao:hover {
+  border-color: var(--accent-border);
+}
+
+.carrinho-item__botao:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.carrinho-item__botao--remover {
+  color: #e0455f;
+  border-color: rgba(224, 69, 95, 0.4);
+}
+
+.carrinho-item__botao--remover:hover {
+  border-color: #e0455f;
+}

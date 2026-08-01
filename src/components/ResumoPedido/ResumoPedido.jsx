@@ -1,3 +1,4 @@
+import { VALOR_INGREDIENTE_EXTRA, formatarPreco } from '../../utils/precos'
 import './ResumoPedido.css'
 
 function ResumoPedido({
@@ -8,6 +9,9 @@ function ResumoPedido({
   podeFinalizar = false,
   onFinalizar = () => {},
 }) {
+  const ingredientesGratis = ingredientes.slice(0, limite)
+  const ingredientesExtras = ingredientes.slice(limite)
+
   return (
     <section className="resumo-pedido">
       <div className="resumo-pedido__card">
@@ -30,14 +34,29 @@ function ResumoPedido({
         <div className="resumo-pedido__row resumo-pedido__row--column">
           <span className="resumo-pedido__label">Ingredientes:</span>
           <span className="resumo-pedido__value">
-            {ingredientes.length > 0
-              ? ingredientes.map((ingrediente) => ingrediente.nome).join(', ')
+            {ingredientesGratis.length > 0
+              ? ingredientesGratis
+                  .map((ingrediente) => ingrediente.nome)
+                  .join(', ')
               : 'Nenhum ingrediente selecionado'}
           </span>
         </div>
 
+        {ingredientesExtras.length > 0 && (
+          <div className="resumo-pedido__row resumo-pedido__row--column">
+            <span className="resumo-pedido__label">Ingredientes Extras:</span>
+            <span className="resumo-pedido__value">
+              {ingredientesExtras.map((ingrediente) => ingrediente.nome).join(', ')}
+              {' — '}
+              {ingredientesExtras.length}{' '}
+              {ingredientesExtras.length === 1 ? 'item' : 'itens'} (+
+              {formatarPreco(ingredientesExtras.length * VALOR_INGREDIENTE_EXTRA)})
+            </span>
+          </div>
+        )}
+
         <p className="resumo-pedido__count">
-          {ingredientes.length} de {limite} ingredientes selecionados
+          {ingredientesGratis.length} de {limite} ingredientes selecionados
         </p>
 
         <button

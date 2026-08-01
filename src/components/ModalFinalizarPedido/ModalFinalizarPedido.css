@@ -88,6 +88,25 @@
   border-top: 1px solid var(--border);
 }
 
+.modal-pedido__item {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-bottom: 14px;
+  border-bottom: 1px dashed var(--border);
+}
+
+.modal-pedido__item:last-of-type {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.modal-pedido__item-titulo {
+  margin: 0;
+  font-weight: 700;
+  color: var(--text-h);
+}
+
 .modal-pedido__label {
   font-weight: 600;
   color: var(--text-h);

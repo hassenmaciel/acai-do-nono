@@ -1,0 +1,114 @@
+.modal-aviso__overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(8, 6, 13, 0.55);
+}
+
+.modal-aviso__card {
+  width: 100%;
+  max-width: 380px;
+  padding: 24px;
+  border-radius: 20px;
+  background: var(--bg);
+  box-shadow: var(--shadow);
+  text-align: center;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .modal-aviso__overlay {
+    animation: modalAvisoFadeIn 200ms ease;
+  }
+
+  .modal-aviso__card {
+    animation: modalAvisoScaleIn 250ms var(--ease-out-soft);
+  }
+}
+
+.modal-aviso__title {
+  margin: 0 0 10px;
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--text-h);
+}
+
+.modal-aviso__texto {
+  margin: 0 0 22px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text);
+}
+
+.modal-aviso__acoes {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.modal-aviso__botao {
+  padding: 14px 20px;
+  border-radius: 999px;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    transform var(--transition-fast) ease,
+    box-shadow var(--transition-base) var(--ease-out-soft),
+    border-color var(--transition-base) var(--ease-out-soft);
+}
+
+.modal-aviso__botao--primario {
+  border: none;
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 8px 20px -6px var(--accent-bg);
+}
+
+.modal-aviso__botao--primario:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px -6px var(--accent-bg);
+}
+
+.modal-aviso__botao--primario:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.modal-aviso__botao--secundario {
+  border: 1.5px solid var(--border);
+  background: transparent;
+  color: var(--text-h);
+}
+
+.modal-aviso__botao--secundario:hover {
+  border-color: var(--accent-border);
+}
+
+.modal-aviso__botao:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+@keyframes modalAvisoFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalAvisoScaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.94) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}

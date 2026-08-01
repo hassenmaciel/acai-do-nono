@@ -1,4 +1,4 @@
-import { formatarPreco } from './precos'
+import { formatarPreco, VALOR_INGREDIENTE_EXTRA } from './precos'
 
 function formatarIngredientes(ingredientes) {
   if (!ingredientes || ingredientes.length === 0) {
@@ -44,6 +44,72 @@ export function gerarMensagemPedido({ pedido, cliente }) {
     `Nome: ${cliente.nome}`,
     `Telefone: ${cliente.telefone}`,
     ...formatarEntrega(cliente),
+  ]
+
+  return linhas.join('\n')
+}
+
+function formatarListaIngredientes(ingredientes) {
+  if (!ingredientes || ingredientes.length === 0) {
+    return ['Ingredientes: Nenhum']
+  }
+
+  return [
+    'Ingredientes:',
+    ...ingredientes.map((ingrediente) => `• ${ingrediente.nome}`),
+  ]
+}
+
+function formatarItemPedido(item, indice) {
+  const { tamanho, base, ingredientes, ingredientesExtras = [], total } = item
+
+  const linhas = [
+    `AÇAÍ ${indice + 1}`,
+    `Tamanho: ${tamanho?.nome ?? '-'}`,
+    `Base: ${base?.nome ?? '-'}`,
+    ...formatarListaIngredientes(ingredientes),
+  ]
+
+  if (ingredientesExtras.length > 0) {
+    const nomesExtras = ingredientesExtras
+      .map((ingrediente) => ingrediente.nome)
+      .join(', ')
+    const valorExtras = formatarPreco(
+      ingredientesExtras.length * VALOR_INGREDIENTE_EXTRA,
+    )
+    linhas.push(`Ingredientes extras: ${nomesExtras} (+${valorExtras})`)
+  }
+
+  linhas.push(`Valor: ${formatarPreco(total)}`)
+
+  return linhas
+}
+
+export function gerarMensagemPedidoMultiplo({ itens, cliente, total }) {
+  const separador = '----------------'
+
+  const blocosItens = itens.flatMap((item, indice) => [
+    separador,
+    '',
+    ...formatarItemPedido(item, indice),
+    '',
+  ])
+
+  const linhas = [
+    'Olá!',
+    'Gostaria de fazer o seguinte pedido.',
+    '',
+    ...blocosItens,
+    separador,
+    '',
+    'TOTAL',
+    formatarPreco(total),
+    '',
+    `Nome: ${cliente.nome}`,
+    `Telefone: ${cliente.telefone}`,
+    ...formatarEntrega(cliente),
+    '',
+    'Obrigado.',
   ]
 
   return linhas.join('\n')

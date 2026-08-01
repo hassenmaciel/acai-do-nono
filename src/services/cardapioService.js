@@ -1,5 +1,5 @@
-import { getTamanhosAtivos } from '../data/tamanhos'
-import { getBasesAtivas } from '../data/bases'
+import { getTamanhosAtivos, getTamanhoPorId } from '../data/tamanhos'
+import { getBasesAtivas, getBasePorId } from '../data/bases'
 import { getIngredientesAtivos, getIngredientesPorIds } from '../data/ingredientes'
 import { getCategoriasAtivas } from '../data/categorias'
 import { getProdutoPorId } from '../data/produtos'
@@ -11,6 +11,14 @@ export function listarTamanhos() {
 
 export function listarBases() {
   return getBasesAtivas()
+}
+
+export function obterTamanho(id) {
+  return getTamanhoPorId(id)
+}
+
+export function obterBase(id) {
+  return getBasePorId(id)
 }
 
 export function listarIngredientes() {

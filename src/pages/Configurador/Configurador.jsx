@@ -1,41 +1,82 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import PreviewAcai from '../../components/PreviewAcai/PreviewAcai'
 import SeletorTamanho from '../../components/SeletorTamanho/SeletorTamanho'
 import SeletorBase from '../../components/SeletorBase/SeletorBase'
 import SeletorIngredientes from '../../components/SeletorIngredientes/SeletorIngredientes'
 import ResumoPedido from '../../components/ResumoPedido/ResumoPedido'
 import TotalPedido from '../../components/TotalPedido/TotalPedido'
-import ModalFinalizarPedido from '../../components/ModalFinalizarPedido/ModalFinalizarPedido'
+import ModalAviso from '../../components/ModalAviso/ModalAviso'
 import BarraFinalizarPedido from '../../components/BarraFinalizarPedido/BarraFinalizarPedido'
-import { calcularTotal, formatarPreco } from '../../utils/precos'
-import {
-  listarIngredientesPorIds,
-  obterProduto,
-} from '../../services/cardapioService'
-import { ID_PRODUTO_ACAI } from '../../data/produtos'
+import { useCart } from '../../hooks/useCart'
+import { calcularTotal, formatarPreco, LIMITE_INGREDIENTES } from '../../utils/precos'
+import { listarIngredientesPorIds } from '../../services/cardapioService'
 import './Configurador.css'
 
-const LIMITE_INGREDIENTES = 5
-
 function Configurador() {
-  const [tamanhoSelecionado, setTamanhoSelecionado] = useState(null)
-  const [baseSelecionada, setBaseSelecionada] = useState(null)
-  const [ingredientesSelecionados, setIngredientesSelecionados] = useState([])
-  const [modalAberto, setModalAberto] = useState(false)
+  const cart = useCart()
+  const navigate = useNavigate()
+  const itemEmEdicao = cart.itemEmEdicao
+
+  const [tamanhoSelecionado, setTamanhoSelecionado] = useState(
+    () => itemEmEdicao?.tamanho ?? null,
+  )
+  const [baseSelecionada, setBaseSelecionada] = useState(
+    () => itemEmEdicao?.base ?? null,
+  )
+  const [ingredientesSelecionados, setIngredientesSelecionados] = useState(
+    () => itemEmEdicao?.ingredientesIds ?? [],
+  )
+  const [modalProximoPasso, setModalProximoPasso] = useState({
+    aberto: false,
+    foiEdicao: false,
+  })
 
   const ingredientesResolvidos = listarIngredientesPorIds(
     ingredientesSelecionados,
   )
-  const produto = obterProduto(ID_PRODUTO_ACAI)
 
   const total = calcularTotal({
     tamanho: tamanhoSelecionado,
     ingredientes: ingredientesResolvidos,
+    limite: LIMITE_INGREDIENTES,
   })
 
   const podeFinalizarPedido = Boolean(tamanhoSelecionado && baseSelecionada)
 
-  const abrirModal = () => setModalAberto(true)
+  const resetarConfiguracao = () => {
+    setTamanhoSelecionado(null)
+    setBaseSelecionada(null)
+    setIngredientesSelecionados([])
+  }
+
+  const finalizarConfiguracaoAtual = () => {
+    const dados = {
+      tamanhoId: tamanhoSelecionado.id,
+      baseId: baseSelecionada.id,
+      ingredientesIds: ingredientesSelecionados,
+    }
+    const foiEdicao = Boolean(itemEmEdicao)
+
+    if (foiEdicao) {
+      cart.atualizarItem(itemEmEdicao.id, dados)
+      cart.finalizarEdicao()
+    } else {
+      cart.adicionarItem(dados)
+    }
+
+    setModalProximoPasso({ aberto: true, foiEdicao })
+  }
+
+  const handleAdicionarOutro = () => {
+    setModalProximoPasso({ aberto: false, foiEdicao: false })
+    resetarConfiguracao()
+  }
+
+  const handleFinalizarPedido = () => {
+    setModalProximoPasso({ aberto: false, foiEdicao: false })
+    navigate('/carrinho')
+  }
 
   return (
     <div
@@ -70,24 +111,33 @@ function Configurador() {
         ingredientes={ingredientesResolvidos}
         limite={LIMITE_INGREDIENTES}
         podeFinalizar={podeFinalizarPedido}
-        onFinalizar={abrirModal}
+        onFinalizar={finalizarConfiguracaoAtual}
       />
       <TotalPedido total={formatarPreco(total)} />
 
-      <ModalFinalizarPedido
-        aberto={modalAberto}
-        onFechar={() => setModalAberto(false)}
-        produto={produto}
-        tamanho={tamanhoSelecionado}
-        base={baseSelecionada}
-        ingredientes={ingredientesResolvidos}
-        total={total}
-      />
+      <ModalAviso
+        aberto={modalProximoPasso.aberto}
+        titulo={
+          modalProximoPasso.foiEdicao
+            ? 'Seu açaí foi atualizado.'
+            : 'Seu açaí foi adicionado.'
+        }
+        acaoSecundaria={{
+          label: 'Adicionar outro açaí',
+          onClick: handleAdicionarOutro,
+        }}
+        acaoPrimaria={{
+          label: 'Finalizar pedido',
+          onClick: handleFinalizarPedido,
+        }}
+      >
+        O que deseja fazer agora?
+      </ModalAviso>
 
       <BarraFinalizarPedido
         visivel={podeFinalizarPedido}
         total={total}
-        onFinalizar={abrirModal}
+        onFinalizar={finalizarConfiguracaoAtual}
       />
     </div>
   )

@@ -1,7 +1,17 @@
 import { useState } from 'react'
 import IngredientChip from '../IngredientChip/IngredientChip'
+import ModalAviso from '../ModalAviso/ModalAviso'
 import { listarIngredientes } from '../../services/cardapioService'
+import {
+  LIMITE_INGREDIENTES_EXTRA,
+  VALOR_INGREDIENTE_EXTRA,
+  formatarPreco,
+} from '../../utils/precos'
 import './SeletorIngredientes.css'
+
+const MODAL_NENHUM = null
+const MODAL_EXTRA = 'extra'
+const MODAL_TETO = 'teto'
 
 const LABEL_CATEGORIA = {
   fruta: 'Frutas',
@@ -41,8 +51,28 @@ function SeletorIngredientes({
   const ingredientes = listarIngredientes()
   const grupos = agruparPorCategoria(ingredientes)
   const [categoriaAtiva, setCategoriaAtiva] = useState(grupos[0]?.categoria)
+  const [modalAberto, setModalAberto] = useState(MODAL_NENHUM)
+  const [ingredientePendente, setIngredientePendente] = useState(null)
 
-  const limiteAtingido = ingredientesSelecionados.length >= limite
+  const totalSelecionados = ingredientesSelecionados.length
+  const limiteTotal = limite + LIMITE_INGREDIENTES_EXTRA
+  const limiteAtingido = totalSelecionados >= limite
+  const tetoAtingido = totalSelecionados >= limiteTotal
+
+  const fecharModal = () => {
+    setModalAberto(MODAL_NENHUM)
+    setIngredientePendente(null)
+  }
+
+  const confirmarExtra = () => {
+    if (ingredientePendente) {
+      onAlterarIngredientes([
+        ...ingredientesSelecionados,
+        ingredientePendente,
+      ])
+    }
+    fecharModal()
+  }
 
   const handleToggle = (id) => {
     if (ingredientesSelecionados.includes(id)) {
@@ -52,7 +82,14 @@ function SeletorIngredientes({
       return
     }
 
+    if (tetoAtingido) {
+      setModalAberto(MODAL_TETO)
+      return
+    }
+
     if (limiteAtingido) {
+      setIngredientePendente(id)
+      setModalAberto(MODAL_EXTRA)
       return
     }
 
@@ -62,7 +99,6 @@ function SeletorIngredientes({
   const grupoAtivo =
     grupos.find((grupo) => grupo.categoria === categoriaAtiva) ?? grupos[0]
 
-  const totalSelecionados = ingredientesSelecionados.length
   const textoRegra =
     totalSelecionados === 0
       ? `Até ${limite} ingredientes`
@@ -132,14 +168,12 @@ function SeletorIngredientes({
               const selecionado = ingredientesSelecionados.includes(
                 ingrediente.id,
               )
-              const desabilitado = !selecionado && limiteAtingido
 
               return (
                 <IngredientChip
                   key={ingrediente.id}
                   nome={ingrediente.nome}
                   selecionado={selecionado}
-                  desabilitado={desabilitado}
                   onToggle={() => handleToggle(ingrediente.id)}
                 />
               )
@@ -147,6 +181,28 @@ function SeletorIngredientes({
           </div>
         </div>
       </div>
+
+      <ModalAviso
+        aberto={modalAberto === MODAL_EXTRA}
+        titulo="Adicionar ingrediente extra?"
+        onFechar={fecharModal}
+        acaoSecundaria={{ label: 'Cancelar', onClick: fecharModal }}
+        acaoPrimaria={{ label: 'Adicionar', onClick: confirmarExtra }}
+      >
+        Este ingrediente será cobrado separadamente.
+        <br />
+        <strong>+{formatarPreco(VALOR_INGREDIENTE_EXTRA)}</strong>
+      </ModalAviso>
+
+      <ModalAviso
+        aberto={modalAberto === MODAL_TETO}
+        titulo="⚠️ Limite atingido"
+        onFechar={fecharModal}
+        acaoPrimaria={{ label: 'OK', onClick: fecharModal }}
+      >
+        Você atingiu o limite máximo de ingredientes para este açaí, incluindo
+        os extras. Remova um ingrediente para adicionar outro.
+      </ModalAviso>
     </section>
   )
 }

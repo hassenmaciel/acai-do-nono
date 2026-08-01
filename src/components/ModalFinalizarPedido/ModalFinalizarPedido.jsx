@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react'
 import { formatarPreco } from '../../utils/precos'
-import { gerarMensagemPedido, gerarLinkWhatsapp } from '../../utils/mensagemPedido'
+import {
+  gerarMensagemPedido,
+  gerarMensagemPedidoMultiplo,
+  gerarLinkWhatsapp,
+} from '../../utils/mensagemPedido'
 import { obterNumeroWhatsapp } from '../../services/cardapioService'
 import './ModalFinalizarPedido.css'
 
@@ -49,10 +53,9 @@ function validarCliente(cliente) {
 function ModalFinalizarPedido({
   aberto,
   onFechar,
+  onEnviado,
   produto,
-  tamanho,
-  base,
-  ingredientes = [],
+  itens = [],
   total,
 }) {
   const [cliente, setCliente] = useState(CAMPOS_INICIAIS)
@@ -100,14 +103,28 @@ function ModalFinalizarPedido({
       return
     }
 
-    const mensagem = gerarMensagemPedido({
-      pedido: { produto, tamanho, base, ingredientes, total },
-      cliente,
-    })
+    const item = itens[0]
+
+    const mensagem =
+      itens.length <= 1
+        ? gerarMensagemPedido({
+            pedido: {
+              produto,
+              tamanho: item?.tamanho,
+              base: item?.base,
+              ingredientes: [
+                ...(item?.ingredientes ?? []),
+                ...(item?.ingredientesExtras ?? []),
+              ],
+              total: item?.total ?? total,
+            },
+            cliente,
+          })
+        : gerarMensagemPedidoMultiplo({ itens, cliente, total })
 
     const link = gerarLinkWhatsapp(obterNumeroWhatsapp(), mensagem)
     window.open(link, '_blank', 'noopener,noreferrer')
-    onFechar()
+    onEnviado()
   }
 
   return (
@@ -138,22 +155,49 @@ function ModalFinalizarPedido({
             <span className="modal-pedido__label">Produto:</span>
             <span className="modal-pedido__value">{produto?.nome}</span>
           </div>
-          <div className="modal-pedido__row">
-            <span className="modal-pedido__label">Tamanho:</span>
-            <span className="modal-pedido__value">{tamanho?.nome}</span>
-          </div>
-          <div className="modal-pedido__row">
-            <span className="modal-pedido__label">Base:</span>
-            <span className="modal-pedido__value">{base?.nome}</span>
-          </div>
-          <div className="modal-pedido__row modal-pedido__row--column">
-            <span className="modal-pedido__label">Ingredientes:</span>
-            <span className="modal-pedido__value">
-              {ingredientes.length > 0
-                ? ingredientes.map((ingrediente) => ingrediente.nome).join(', ')
-                : 'Nenhum ingrediente selecionado'}
-            </span>
-          </div>
+
+          {itens.map((item, indice) => (
+            <div className="modal-pedido__item" key={item.id}>
+              <p className="modal-pedido__item-titulo">
+                Açaí {indice + 1} — {item.tamanho?.nome}
+              </p>
+
+              <div className="modal-pedido__row">
+                <span className="modal-pedido__label">Base:</span>
+                <span className="modal-pedido__value">{item.base?.nome}</span>
+              </div>
+
+              <div className="modal-pedido__row modal-pedido__row--column">
+                <span className="modal-pedido__label">Ingredientes:</span>
+                <span className="modal-pedido__value">
+                  {item.ingredientes.length > 0
+                    ? item.ingredientes
+                        .map((ingrediente) => ingrediente.nome)
+                        .join(', ')
+                    : 'Nenhum ingrediente selecionado'}
+                </span>
+              </div>
+
+              {item.ingredientesExtras.length > 0 && (
+                <div className="modal-pedido__row modal-pedido__row--column">
+                  <span className="modal-pedido__label">Extras:</span>
+                  <span className="modal-pedido__value">
+                    {item.ingredientesExtras
+                      .map((ingrediente) => ingrediente.nome)
+                      .join(', ')}
+                  </span>
+                </div>
+              )}
+
+              <div className="modal-pedido__row">
+                <span className="modal-pedido__label">Valor:</span>
+                <span className="modal-pedido__value">
+                  {formatarPreco(item.total)}
+                </span>
+              </div>
+            </div>
+          ))}
+
           <div className="modal-pedido__row modal-pedido__row--total">
             <span className="modal-pedido__label">Total:</span>
             <span className="modal-pedido__value modal-pedido__value--total">

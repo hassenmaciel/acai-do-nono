@@ -59,7 +59,6 @@ function PreviewAcai({ tamanho, base, ingredientes = [] }) {
               ingredientes={ingredientes}
             />
           </div>
-          <p className="preview-acai__text">Seu açaí aparecerá aqui.</p>
         </div>
       </section>
 
