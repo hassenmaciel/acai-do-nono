@@ -210,6 +210,10 @@
   box-shadow: 0 12px 20px -4px var(--accent-bg);
 }
 
+.modal-pedido__enviar:active {
+  transform: scale(0.97);
+}
+
 .modal-pedido__enviar:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;

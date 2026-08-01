@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import PreviewAcai from '../../components/PreviewAcai/PreviewAcai'
+import EtapaProgresso from '../../components/EtapaProgresso/EtapaProgresso'
 import SeletorTamanho from '../../components/SeletorTamanho/SeletorTamanho'
 import SeletorBase from '../../components/SeletorBase/SeletorBase'
 import SeletorIngredientes from '../../components/SeletorIngredientes/SeletorIngredientes'
@@ -32,6 +33,14 @@ function Configurador() {
     aberto: false,
     foiEdicao: false,
   })
+  const [scrollPendente, setScrollPendente] = useState(0)
+
+  useEffect(() => {
+    if (scrollPendente === 0) {
+      return
+    }
+    scrollParaTopo()
+  }, [scrollPendente])
 
   const ingredientesResolvidos = listarIngredientesPorIds(
     ingredientesSelecionados,
@@ -44,6 +53,14 @@ function Configurador() {
   })
 
   const podeFinalizarPedido = Boolean(tamanhoSelecionado && baseSelecionada)
+
+  const etapaAtual = !tamanhoSelecionado
+    ? 1
+    : !baseSelecionada
+      ? 2
+      : ingredientesSelecionados.length === 0
+        ? 3
+        : 4
 
   const resetarConfiguracao = () => {
     setTamanhoSelecionado(null)
@@ -77,13 +94,13 @@ function Configurador() {
   const handleAdicionarOutro = () => {
     setModalProximoPasso({ aberto: false, foiEdicao: false })
     resetarConfiguracao()
-    scrollParaTopo()
+    setScrollPendente((tick) => tick + 1)
   }
 
   const handleAdicionarOutroDireto = () => {
     salvarItemAtual()
     resetarConfiguracao()
-    scrollParaTopo()
+    setScrollPendente((tick) => tick + 1)
   }
 
   const handleFinalizarPedido = () => {
@@ -105,6 +122,7 @@ function Configurador() {
         base={baseSelecionada}
         ingredientes={ingredientesSelecionados}
       />
+      <EtapaProgresso etapaAtual={etapaAtual} />
       <SeletorTamanho
         tamanhoSelecionado={tamanhoSelecionado}
         onSelecionarTamanho={setTamanhoSelecionado}

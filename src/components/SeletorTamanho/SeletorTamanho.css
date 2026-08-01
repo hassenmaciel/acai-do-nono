@@ -1,5 +1,5 @@
 .seletor-tamanho {
-  padding: 20px 24px 28px;
+  padding: 14px 24px 14px;
   text-align: center;
 }
 
@@ -57,6 +57,7 @@
   transition:
     border-color var(--transition-base) var(--ease-out-soft),
     background-color var(--transition-base) var(--ease-out-soft),
+    box-shadow var(--transition-base) var(--ease-out-soft),
     transform var(--transition-fast) ease;
 }
 
@@ -78,6 +79,7 @@
 .tamanho-card--selected {
   border-color: var(--accent);
   background: var(--accent-bg);
+  box-shadow: 0 4px 14px -6px var(--accent-bg);
   animation: chipPop var(--transition-base) var(--ease-out-soft);
 }
 

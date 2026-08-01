@@ -1,7 +1,15 @@
 import { useEffect } from 'react'
 import './ModalAviso.css'
 
-function ModalAviso({ aberto, titulo, children, onFechar, acaoPrimaria, acaoSecundaria }) {
+function ModalAviso({
+  aberto,
+  titulo,
+  icone,
+  children,
+  onFechar,
+  acaoPrimaria,
+  acaoSecundaria,
+}) {
   useEffect(() => {
     if (!aberto) {
       return undefined
@@ -35,6 +43,12 @@ function ModalAviso({ aberto, titulo, children, onFechar, acaoPrimaria, acaoSecu
         aria-labelledby="modal-aviso-titulo"
         onClick={(event) => event.stopPropagation()}
       >
+        {icone && (
+          <span className="modal-aviso__icone" aria-hidden="true">
+            {icone}
+          </span>
+        )}
+
         <h2 id="modal-aviso-titulo" className="modal-aviso__title">
           {titulo}
         </h2>

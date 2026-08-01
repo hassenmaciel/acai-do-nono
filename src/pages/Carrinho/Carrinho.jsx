@@ -95,7 +95,8 @@ function Carrinho() {
 
       <ModalAviso
         aberto={modalEnviadoAberto}
-        titulo="🎉 Pedido enviado!"
+        icone="🎉"
+        titulo="Pedido enviado!"
         acaoSecundaria={{
           label: '🏠 Voltar ao início',
           onClick: handleVoltarInicio,

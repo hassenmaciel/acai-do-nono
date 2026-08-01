@@ -94,6 +94,10 @@
   opacity: 0.6;
 }
 
+.resumo-pedido__cta:not(:disabled) {
+  animation: ctaHabilitado 320ms var(--ease-out-soft);
+}
+
 .resumo-pedido__cta--secundario {
   margin-top: 12px;
   margin-bottom: 10px;

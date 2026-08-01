@@ -79,3 +79,7 @@
   outline: 2px solid var(--accent);
   outline-offset: 3px;
 }
+
+.barra-finalizar--visivel .barra-finalizar__cta {
+  animation: ctaHabilitado 320ms var(--ease-out-soft);
+}

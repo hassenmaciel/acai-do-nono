@@ -16,6 +16,7 @@
     background-color var(--transition-base) var(--ease-out-soft),
     border-color var(--transition-base) var(--ease-out-soft),
     color var(--transition-base) var(--ease-out-soft),
+    box-shadow var(--transition-base) var(--ease-out-soft),
     transform var(--transition-fast) ease;
 }
 
@@ -31,6 +32,7 @@
   border-color: var(--accent);
   background: var(--accent);
   color: #fff;
+  box-shadow: 0 4px 14px -6px var(--accent-bg);
   animation: chipPop var(--transition-base) var(--ease-out-soft);
 }
 

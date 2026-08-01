@@ -29,15 +29,28 @@
   }
 }
 
+.modal-aviso__icone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 14px;
+  border-radius: 50%;
+  background: var(--accent-bg);
+  font-size: 28px;
+  line-height: 1;
+}
+
 .modal-aviso__title {
-  margin: 0 0 10px;
+  margin: 0 0 12px;
   font-size: 19px;
   font-weight: 700;
   color: var(--text-h);
 }
 
 .modal-aviso__texto {
-  margin: 0 0 22px;
+  margin: 0 0 24px;
   font-size: 14px;
   line-height: 1.5;
   color: var(--text);
@@ -46,7 +59,7 @@
 .modal-aviso__acoes {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 
 .modal-aviso__botao {
@@ -86,6 +99,10 @@
 
 .modal-aviso__botao--secundario:hover {
   border-color: var(--accent-border);
+}
+
+.modal-aviso__botao--secundario:active {
+  transform: scale(0.98);
 }
 
 .modal-aviso__botao:focus-visible {
