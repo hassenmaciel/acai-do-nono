@@ -34,6 +34,11 @@ function ModalAviso({
     return null
   }
 
+  function acionarComDesbloqueio(callback) {
+    document.body.style.overflow = ''
+    callback?.()
+  }
+
   return (
     <div className="modal-aviso__overlay" onClick={onFechar}>
       <div
@@ -60,7 +65,7 @@ function ModalAviso({
             <button
               type="button"
               className="modal-aviso__botao modal-aviso__botao--secundario"
-              onClick={acaoSecundaria.onClick}
+              onClick={() => acionarComDesbloqueio(acaoSecundaria.onClick)}
             >
               {acaoSecundaria.label}
             </button>
@@ -69,7 +74,7 @@ function ModalAviso({
             <button
               type="button"
               className="modal-aviso__botao modal-aviso__botao--primario"
-              onClick={acaoPrimaria.onClick}
+              onClick={() => acionarComDesbloqueio(acaoPrimaria.onClick)}
             >
               {acaoPrimaria.label}
             </button>
